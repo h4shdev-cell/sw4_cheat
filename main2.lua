@@ -1,39 +1,21 @@
--- InjectorScript.lua
+-- Script para Roube um Brainrot - Dinheiro Infinito
 
 local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local player = Players.LocalPlayer
 
-local function fetchElementData()
-    local elementData = {}
-    for _, data in ipairs(ReplicatedStorage:GetChildren()) do
-        if data:IsA("ModuleScript") and data.Name == "ElementData" then
-            local module = require(data)
-            for key, value in pairs(module) do
-                elementData[key] = value
-            end
+-- Função para adicionar dinheiro ao jogador
+local function addMoney(amount)
+    local leaderstats = player:FindFirstChild("leaderstats")
+    if leaderstats then
+        local money = leaderstats:FindFirstChild("Money")
+        if money then
+            money.Value = money.Value + amount
         end
     end
-    return elementData
 end
 
-local function breakProtection()
-    local elementData = fetchElementData()
-    for key, value in pairs(elementData) do
-        print("ElementData:", key, value)
-        -- Aqui você pode adicionar a lógica para quebrar a proteção
-        -- Por exemplo, alterar valores ou chamar funções específicas
-    end
+-- Loop para adicionar dinheiro infinito
+while true do
+    addMoney(1000) -- Ajuste o valor conforme necessário
+    wait(1) -- Intervalo de tempo entre cada adição de dinheiro
 end
-
-local function giveMoney(value)
-    local remoteEvent = ReplicatedStorage:FindFirstChild("AddMoneyEvent")
-    if remoteEvent then
-        remoteEvent:FireServer(value)
-    else
-        print("RemoteEvent não encontrado")
-    end
-end
-
-breakProtection()
-giveMoney(50000000000)
