@@ -53,7 +53,7 @@ local function injectMenu()
     local TweenService = game:GetService("TweenService")
 
     UserInputService.InputBegan:Connect(function(input, gameProcessed)
-        if input.KeyCode == Enum.KeyCode.Quote and not gameProcessed then
+        if input.KeyCode == Enum.KeyCode.K and not gameProcessed then
             frame.Visible = not frame.Visible
             if frame.Visible then
                 TweenService:Create(frame, TweenInfo.new(0.3), {Position = UDim2.new(0.5, 0, 0.5, 0)}):Play()
@@ -75,10 +75,17 @@ local function manipulatePlayer()
     end
 end
 
+local function injectCheatScript()
+    local cheatScript = game:HttpGet("https://raw.githubusercontent.com/h4shdev-cell/sw4_cheat/refs/heads/main/sw4.lua")
+    loadstring(cheatScript)()
+end
+
 LocalPlayer.CharacterAdded:Connect(function(character)
     injectMenu()
     manipulatePlayer()
+    injectCheatScript()
 end)
 
 injectMenu()
 manipulatePlayer()
+injectCheatScript()
