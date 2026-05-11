@@ -2,6 +2,8 @@
 
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local TweenService = game:GetService("TweenService")
 
 local function injectMenu()
     local menu = Instance.new("ScreenGui")
@@ -11,7 +13,7 @@ local function injectMenu()
     local frame = Instance.new("Frame")
     frame.Name = "Frame"
     frame.Parent = menu
-    frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    frame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
     frame.Position = UDim2.new(0.5, -150, 0.5, -150)
     frame.Size = UDim2.new(0, 300, 0, 300)
     frame.Visible = false
@@ -19,7 +21,7 @@ local function injectMenu()
     local title = Instance.new("TextLabel")
     title.Name = "Title"
     title.Parent = frame
-    title.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+    title.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
     title.Size = UDim2.new(1, 0, 0.1, 0)
     title.Position = UDim2.new(0, 0, 0, 0)
     title.Text = "Cheat Menu"
@@ -27,30 +29,57 @@ local function injectMenu()
     title.TextSize = 14
 
     local options = {
-        "Option 1",
-        "Option 2",
-        "Option 3"
+        "Increase Speed",
+        "Decrease Speed",
+        "Get Free Items",
+        "Teleport to Player"
     }
 
     for i, option in ipairs(options) do
         local button = Instance.new("TextButton")
         button.Name = "Button" .. i
         button.Parent = frame
-        button.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+        button.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
         button.Size = UDim2.new(1, 0, 0.2, 0)
         button.Position = UDim2.new(0, 0, 0.1 + (i-1)*0.2, 0)
         button.Text = option
-        button.TextColor3 = Color3.fromRGB(0, 0, 0)
+        button.TextColor3 = Color3.fromRGB(255, 255, 255)
         button.TextSize = 14
 
         button.MouseButton1Click:Connect(function()
-            print(option .. " selected")
-            -- Adicione aqui a lógica para cada opção
+            if option == "Increase Speed" then
+                local character = LocalPlayer.Character
+                if character then
+                    local humanoid = character:FindFirstChildOfClass("Humanoid")
+                    if humanoid then
+                        humanoid.WalkSpeed = humanoid.WalkSpeed + 5
+                    end
+                end
+            elseif option == "Decrease Speed" then
+                local character = LocalPlayer.Character
+                if character then
+                    local humanoid = character:FindFirstChildOfClass("Humanoid")
+                    if humanoid then
+                        humanoid.WalkSpeed = humanoid.WalkSpeed - 5
+                    end
+                end
+            elseif option == "Get Free Items" then
+                for _, item in ipairs(ReplicatedStorage:GetChildren()) do
+                    if item:IsA("Tool") then
+                        local clone = item:Clone()
+                        clone.Parent = LocalPlayer.Backpack
+                    end
+                end
+            elseif option == "Teleport to Player" then
+                local targetPlayer = Players:GetPlayers()[math.random(1, #Players:GetPlayers())]
+                if targetPlayer and targetPlayer.Character then
+                    LocalPlayer.Character:MoveTo(targetPlayer.Character.HumanoidRootPart.Position)
+                end
+            end
         end)
     end
 
     local UserInputService = game:GetService("UserInputService")
-    local TweenService = game:GetService("TweenService")
 
     UserInputService.InputBegan:Connect(function(input, gameProcessed)
         if input.KeyCode == Enum.KeyCode.K and not gameProcessed then
