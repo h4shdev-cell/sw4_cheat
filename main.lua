@@ -3,6 +3,7 @@
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local TweenService = game:GetService("TweenService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local function injectMenu()
     local menu = Instance.new("ScreenGui")
@@ -74,18 +75,12 @@ local function injectMenu()
 end
 
 local function giveMoney(value)
-    -- Substitua 'Money' pelo nome do objeto ou valor que representa o dinheiro no jogo
-    local money = Instance.new("IntValue")
-    money.Name = "Money"
-    money.Value = value
-    money.Parent = LocalPlayer
-
-    -- Se o jogo usa um sistema de moeda específico, você pode precisar ajustar o código abaixo
-    -- Por exemplo, se o jogo usa um RemoteEvent para adicionar dinheiro, você pode precisar chamar esse evento
-    -- local remoteEvent = game:GetService("ReplicatedStorage"):FindFirstChild("AddMoneyEvent")
-    -- if remoteEvent then
-    --     remoteEvent:FireServer(value)
-    -- end
+    local remoteEvent = ReplicatedStorage:FindFirstChild("AddMoneyEvent")
+    if remoteEvent then
+        remoteEvent:FireServer(value)
+    else
+        print("RemoteEvent não encontrado")
+    end
 end
 
 injectMenu()
