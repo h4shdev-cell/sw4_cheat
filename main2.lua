@@ -1,4 +1,4 @@
--- Script para Roube um Brainrot - Dinheiro Infinito
+-- Script para Roube um Brainrot - Dinheiro Infinito (30 bilhões a cada 10 segundos)
 
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
@@ -16,6 +16,6 @@ end
 
 -- Loop para adicionar dinheiro infinito
 while true do
-    addMoney(1000) -- Ajuste o valor conforme necessário
-    wait(1) -- Intervalo de tempo entre cada adição de dinheiro
+    addMoney(30000000000) -- Adiciona 30 bilhões de dinheiro
+    wait(10) -- Intervalo de 10 segundos entre cada adição
 end
